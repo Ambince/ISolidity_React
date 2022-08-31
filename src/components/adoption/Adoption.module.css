@@ -1,0 +1,26 @@
+@import '~antd/dist/antd.css';
+
+
+.adoption_container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.adoption_container button {
+    min-width: 140px;
+    height: 24px;
+}
+
+.adoption_container_title {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
