@@ -9,12 +9,16 @@
     align-items: center;
     gap: 10px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .adoption_container button {
     min-width: 140px;
     height: 24px;
+}
+
+.adoption_container span {
+    max-height: 10px;
 }
 
 .adoption_container_title {

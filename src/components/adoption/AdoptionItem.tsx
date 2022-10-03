@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, notification } from "antd";
 import styles from "./Adoption.module.css";
 import { NotificationPlacement } from "antd/lib/notification";
+import { useWeb3React } from "@web3-react/core";
+import { Web3Provider } from "@ethersproject/providers";
 
-const {Meta} = Card;
 
 interface PetInfo {
   id: number,
@@ -13,7 +14,8 @@ interface PetInfo {
   breed: string,
   location: string,
   active?: boolean,
-
+  address?: string,
+  deployedContract?: any,
 }
 
 
@@ -27,16 +29,26 @@ const AdoptionTitle: React.FC<PetInfo> = (petInfo) => {
 };
 
 
-export const AdoptionItem: React.FC<PetInfo> = (petInfo) => {
+export const AdoptionItem: React.FC<PetInfo> = ({address, deployedContract, ...petInfo}) => {
+  const {account} = useWeb3React<Web3Provider>();
+  const [active, setActive] = useState(false);
 
-  const onAdopt = (adoptId: number, placement: NotificationPlacement) => {
+  useEffect(() => {
+    if (address !== "0x0000000000000000000000000000000000000000") {
+      setActive(true);
+    }
+  }, [active]);
+
+  const onAdopt = async (adoptId: number, placement: NotificationPlacement) => {
+    const result = await deployedContract.adopt(adoptId, {from: account});
+
     notification.info({
-      message: `Notification ${ adoptId } `,
-      description:
-        "This is the content of the notification. This is the content of the notification. This is the content of the notification.",
+      message: `Notification `,
+      description: `交易记录${ result.tx } `,
       placement,
       duration: 1,
     });
+    setActive(false);
   };
 
   return <Card
@@ -47,7 +59,9 @@ export const AdoptionItem: React.FC<PetInfo> = (petInfo) => {
     title={ <AdoptionTitle { ...petInfo }/> }
   >
     <div className={ styles["adoption_container"] }>
-      <Button type="primary" shape="round" size="large" onClick={ () => onAdopt(petInfo.id, "top") }>领养</Button>
+      <Button type="primary" disabled={ active } shape="round" size="large" onClick={ () => onAdopt(petInfo.id, "top") }>
+        { petInfo.active ? "已被领养" : "领养" }
+      </Button>
       <span>{ petInfo.location }</span>
     </div>
 
