@@ -11,7 +11,7 @@ import pets from "../../data/pets.json";
 
 export const AdoptionContainer: React.FC = () => {
 
-  const injectedConnector = new InjectedConnector({supportedChainIds: [1, 3, 4, 5, 42]});
+  const injectedConnector = new InjectedConnector({supportedChainIds: [5]});
   const {chainId, activate, library} = useWeb3React<Web3Provider>();
   const [adapters, setAdapters] = useState([]);
   const [deployedContract, setDeployedContract] = useState(null);
